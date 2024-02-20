@@ -1,0 +1,29 @@
+header {
+	background-color: #1C1C21;
+}
+
+.header {
+	top: 40px;
+	height: 88px;
+	border: 2px;
+	margin: auto;
+  display: flex;
+	max-width: 1300px;
+  align-items: center;
+}
+
+.menuItem {
+	width: auto;
+	  display: flex;
+	  padding: 16px 20px 16px 20px;
+	  position: relative;
+	max-width: 100%;
+	  margin-right: 2px;
+	  justify-content: center;
+  }
+  
+  .menuLogo {
+  
+	composes: menuItem;
+	flex-grow: 1;
+  }

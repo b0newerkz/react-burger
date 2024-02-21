@@ -17,6 +17,9 @@
 	flex-direction: row;
 	margin-bottom: 40px;
 }
+.tab {
+	display: flex;
+}
 .card {
 
 	display: flex;
@@ -25,14 +28,23 @@
 	width: 278px;
 	margin-bottom: 30px;
 }
+.cardTop {
 
+	display: flex;
+	position: relative;
+}
 .cardImage {
 
 	display: block;
 	padding: 4px;
 	margin: 0 10px 10px 10px;
 }
-
+.cardBottom {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 4px;
+}
 .name {
 
 	text-align: center;

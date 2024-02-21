@@ -4,7 +4,7 @@ import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
 import {Counter} from '@ya.praktikum/react-developer-burger-ui-components';
 import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import myTypes from '../../utils/types'
+import ingredientType from '../../utils/types'
 
 const Ingredient = props => {
 
@@ -13,11 +13,11 @@ const Ingredient = props => {
 	return (
 
 		<div className={style.card}>
-			<div style={{display: 'flex', position: 'relative'}}>
+			<div className={style.cardTop}>
 				{_id === '60666c42cc7b410027a1a9b1' && <Counter count={1} size="default" extraClass="m-1" />}
 				<img src={image} alt={name} className={style.cardImage} />
 			</div>
-			<div style={{width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '4px'}}>
+			<div className={style.cardBottom}>
 				<p className="text text_type_digits-default mr-2">{price}</p> <CurrencyIcon type="primary" />
 			</div>
 			<div className={style.name}>
@@ -55,7 +55,7 @@ const List = props => {
 List.propTypes = {
 
 	category: PropTypes.string.isRequired,
-	data: PropTypes.arrayOf(myTypes.burgerPropTypes)
+	data: PropTypes.arrayOf(ingredientType.burger)
 };
 
 const BurgerIngredients = (props) => {
@@ -71,7 +71,7 @@ const BurgerIngredients = (props) => {
 				Соберите бургер
 			</p>
 
-			<div style={{ display: 'flex' }} className='mb-5'>
+			<div className={`mb-5 ${style.tab}`}>
 				<Tab value="one" active={state.tab === 'one'}>
 					Булки
 				</Tab>
@@ -95,7 +95,7 @@ const BurgerIngredients = (props) => {
 
 BurgerIngredients.propTypes = {
 	
-	data: PropTypes.arrayOf(myTypes.burgerPropTypes)
+	data: PropTypes.arrayOf(ingredientType.burger)
 }
 
 

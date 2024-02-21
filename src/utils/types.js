@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const types = {
 
-	burgerPropTypes: PropTypes.shape({
+	burger: PropTypes.shape({
 
 		_id: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,

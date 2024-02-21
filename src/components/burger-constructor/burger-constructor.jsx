@@ -5,21 +5,21 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types'
-import myTypes from '../../utils/types'
+import ingredientType from '../../utils/types'
 
 
 const ConstructorItems = (props) => {
 
 	return (
-		<div style={{ display: 'flex', flexDirection: 'column', gap: '10px', overflow: 'auto', maxHeight: 350 }}>
+		<div className={style.items}>
 			{props.items.map((e, i) => {
 
 				return (
-					<div style={{display: 'flex', alignItems: 'center'}} key={i}>
-						<div style={{minWidth: '32px'}}>
+					<div className={style.item} key={i}>
+						<div className={style.dragIcon}>
 							{props.place === 'main' && <DragIcon type='primary' />}
 						</div>
-						<div style={{width: '100%'}}>
+						<div className={style.info}>
 							
 							<ConstructorElement
 								type={props.place}
@@ -39,7 +39,7 @@ const ConstructorItems = (props) => {
 ConstructorItems.propTypes = {
 
 	place: PropTypes.string.isRequired,
-	items: PropTypes.arrayOf(myTypes.burgerPropTypes)
+	items: PropTypes.arrayOf(ingredientType.burger)
 }
 
 const BurgerConstructor = (props) => {
@@ -66,7 +66,7 @@ const BurgerConstructor = (props) => {
 	return (
 		<div className={style.main}>
 			
-			<div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+			<div className={style.list}>
 
 				<ConstructorItems place='top' items={ingredients.top} />
 
@@ -87,7 +87,7 @@ const BurgerConstructor = (props) => {
 
 BurgerConstructor.propTypes = {
 	
-	data: PropTypes.arrayOf(myTypes.burgerPropTypes)
+	data: PropTypes.arrayOf(ingredientType.burger)
 }
 
 export default BurgerConstructor

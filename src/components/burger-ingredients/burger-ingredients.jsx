@@ -3,23 +3,8 @@ import style from './burger-ingredients.module.css'
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
 import {Counter} from '@ya.praktikum/react-developer-burger-ui-components';
 import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types'
-
-const burgerPropTypes = PropTypes.shape({
-
-	_id: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired,
-	proteins: PropTypes.number.isRequired,
-	fat: PropTypes.number.isRequired,
-	carbohydrates: PropTypes.number.isRequired,
-	calories: PropTypes.number.isRequired,
-	price: PropTypes.number.isRequired,
-	image: PropTypes.string.isRequired,
-	image_mobile: PropTypes.string.isRequired,
-	image_large: PropTypes.string.isRequired,
-	__v: PropTypes.number.isRequired,
-});
+import PropTypes from 'prop-types';
+import myTypes from '../../utils/types'
 
 const Ingredient = props => {
 
@@ -70,7 +55,7 @@ const List = props => {
 List.propTypes = {
 
 	category: PropTypes.string.isRequired,
-	data: PropTypes.arrayOf(burgerPropTypes)
+	data: PropTypes.arrayOf(myTypes.burgerPropTypes)
 };
 
 const BurgerIngredients = (props) => {
@@ -110,7 +95,7 @@ const BurgerIngredients = (props) => {
 
 BurgerIngredients.propTypes = {
 	
-	data: PropTypes.arrayOf(burgerPropTypes)
+	data: PropTypes.arrayOf(myTypes.burgerPropTypes)
 }
 
 

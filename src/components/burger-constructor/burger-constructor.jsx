@@ -50,6 +50,12 @@ const ConstructorItems = (props) => {
 	)
 }
 
+ConstructorItems.propTypes = {
+
+	place: PropTypes.string.isRequired,
+	items: PropTypes.arrayOf(burgerPropTypes)
+}
+
 const BurgerConstructor = (props) => {
 
 	const ingredients = {

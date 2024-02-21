@@ -27,7 +27,7 @@ const Ingredient = props => {
 
 	return (
 
-		<div className={style.card} key={_id}>
+		<div className={style.card}>
 			<div style={{display: 'flex', position: 'relative'}}>
 				{_id === '60666c42cc7b410027a1a9b1' && <Counter count={1} size="default" extraClass="m-1" />}
 				<img src={image} alt={name} className={style.cardImage} />
@@ -42,6 +42,16 @@ const Ingredient = props => {
 	)
 }
 
+Ingredient.propTypes = {
+	
+	data: PropTypes.shape({
+
+		_id: PropTypes.string.isRequired,
+		name: PropTypes.string.isRequired,
+		price: PropTypes.number.isRequired,
+		image: PropTypes.string.isRequired,
+	})
+};
 
 const List = props => {
 
@@ -55,6 +65,12 @@ const List = props => {
 		</div>
 	  </>
 	);
+};
+
+List.propTypes = {
+
+	category: PropTypes.string.isRequired,
+	data: PropTypes.arrayOf(burgerPropTypes)
 };
 
 const BurgerIngredients = (props) => {

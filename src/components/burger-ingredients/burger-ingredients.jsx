@@ -5,25 +5,37 @@ import {Counter} from '@ya.praktikum/react-developer-burger-ui-components';
 import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import ingredientType from '../../utils/types'
+import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+
 
 const Ingredient = props => {
 
 	const {_id, image, name, price} = props.data;
 
+	const [isModalOpen, setModalOpen] = React.useState(false);
+
+	const openModal = (e) => setModalOpen(true);
+
+	const closeModal = () => setModalOpen(false);
+
 	return (
 
-		<div className={style.card}>
-			<div className={style.cardTop}>
-				{_id === '60666c42cc7b410027a1a9b1' && <Counter count={1} size="default" extraClass="m-1" />}
-				<img src={image} alt={name} className={style.cardImage} />
+		<>
+			<div className={style.card} id={name} onClick={openModal}>
+				<div className={style.cardTop}>
+					{_id === '60666c42cc7b410027a1a9b1' && <Counter count={1} size="default" extraClass="m-1" />}
+					<img src={image} alt={name} className={style.cardImage} />
+				</div>
+				<div className={style.cardBottom}>
+					<p className="text text_type_digits-default mr-2">{price}</p> <CurrencyIcon type="primary" />
+				</div>
+				<div className={style.name}>
+					{name}
+				</div>
 			</div>
-			<div className={style.cardBottom}>
-				<p className="text text_type_digits-default mr-2">{price}</p> <CurrencyIcon type="primary" />
-			</div>
-			<div className={style.name}>
-				{name}
-			</div>
-		</div>
+			{isModalOpen && <Modal title='Детали ингредиента' onClose={closeModal}><IngredientDetails data={props.data} /></Modal>}
+		</>
 	)
 }
 

@@ -6,32 +6,54 @@ import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types'
 import ingredientType from '../../utils/types'
+import Modal from '../modal/modal'
+import OrderDetails from '../order-details/order-details'
+import IngredientDetails from '../ingredient-details/ingredient-details'
 
+
+const ConstructorItem = (props) => {
+
+	const [isModalOpen, setModalOpen] = React.useState(false);
+
+	const openModal = () => setModalOpen(true);
+
+	const closeModal = () => setModalOpen(false);
+
+	const modal = (<Modal title='Детали ингредиента' onClose={closeModal}><IngredientDetails data={props.data} /></Modal>);
+
+	return (
+		<>
+			<div className={style.item} onClick={openModal}>
+				<div className={style.dragIcon}>
+					{props.place === 'main' && <DragIcon type='primary' />}
+				</div>
+				<div className={style.info}>
+					
+					<ConstructorElement
+						type={props.place}
+						isLocked={props.place === 'main' ? false : true}
+						text={`${props.data.name} ${props.place === 'top' ? '(верх)' : props.place === 'bottom' ? '(низ)' : ''}`}
+						price={props.data.price}
+						thumbnail={props.data.image}
+					/>
+				</div>
+			</div>
+			{isModalOpen && modal}
+		</>
+	)
+}
+
+ConstructorItem.propTypes = {
+
+	place: PropTypes.string.isRequired,
+	data: ingredientType.burger
+}
 
 const ConstructorItems = (props) => {
 
 	return (
 		<div className={style.items}>
-			{props.items.map((e, i) => {
-
-				return (
-					<div className={style.item} key={i}>
-						<div className={style.dragIcon}>
-							{props.place === 'main' && <DragIcon type='primary' />}
-						</div>
-						<div className={style.info}>
-							
-							<ConstructorElement
-								type={props.place}
-								isLocked={props.place === 'main' ? false : true}
-								text={`${e.name} ${props.place === 'top' ? '(верх)' : props.place === 'bottom' ? '(низ)' : ''}`}
-								price={e.price}
-								thumbnail={e.image}
-							/>
-						</div>
-					</div>
-				)
-			})}
+			{props.items.map((e, i) => (<ConstructorItem key={i} data={e} place={props.place} />))}
 		</div>
 	)
 }
@@ -43,6 +65,12 @@ ConstructorItems.propTypes = {
 }
 
 const BurgerConstructor = (props) => {
+
+	const [showOrder, setShowOrder] = React.useState(false);
+
+	const openOrder = () => setShowOrder(true);
+
+	const closeOrder = () => setShowOrder(false);
 
 	const ingredients = {
 
@@ -56,7 +84,7 @@ const BurgerConstructor = (props) => {
 			props.data[8],
 			props.data[8],
 			props.data[8],
-			props.data[8],
+			props.data[10],
 		],
 
 		bottom: [props.data[0]]
@@ -75,9 +103,12 @@ const BurgerConstructor = (props) => {
 				<ConstructorItems place='bottom' items={ingredients.bottom} />
 
 				<div className={style.button}>
+
 					<p className="text text_type_digits-medium">610</p>
 					<CurrencyIcon type="primary"/>
-					<Button htmlType="button" type="primary" size="medium">Оформить заказ</Button>
+					<Button htmlType="button" type="primary" onClick={openOrder} size="medium">Оформить заказ</Button>
+
+					{showOrder && <Modal onClose={closeOrder}><OrderDetails orderId='034536' /></Modal>}
             	</div>
     		</div>
 		</div>

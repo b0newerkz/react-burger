@@ -34,6 +34,7 @@ const App = () => {
 				console.log("Ошибка: "+ e.message)
 				setData({...data.ingredients, isLoading: false, hasError: true })
 			})
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

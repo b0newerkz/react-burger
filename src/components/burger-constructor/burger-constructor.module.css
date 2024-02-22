@@ -16,20 +16,3 @@
 	flex-direction: column;
 	gap: 10px;
 }
-.items {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	overflow: auto;
-	max-height: 350px;
-}
-.item {
-	display: flex;
-	align-items: center;
-}
-.dragIcon {
-	min-width: 32px;
-}
-.info {
-	width: 100%;
-}

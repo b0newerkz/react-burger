@@ -1,8 +1,6 @@
 import React from 'react'
 import style from './burger-ingredients.module.css'
-import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
-import {Counter} from '@ya.praktikum/react-developer-burger-ui-components';
-import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Tab, Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import ingredientType from '../../utils/types'
 import Modal from '../modal/modal';
@@ -47,7 +45,7 @@ Ingredient.propTypes = {
 		name: PropTypes.string.isRequired,
 		price: PropTypes.number.isRequired,
 		image: PropTypes.string.isRequired,
-	})
+	}).isRequired
 };
 
 const List = props => {
@@ -67,7 +65,7 @@ const List = props => {
 List.propTypes = {
 
 	category: PropTypes.string.isRequired,
-	data: PropTypes.arrayOf(ingredientType.burger)
+	data: PropTypes.arrayOf(ingredientType.burger).isRequired
 };
 
 const BurgerIngredients = (props) => {
@@ -107,7 +105,7 @@ const BurgerIngredients = (props) => {
 
 BurgerIngredients.propTypes = {
 	
-	data: PropTypes.arrayOf(ingredientType.burger)
+	data: PropTypes.arrayOf(ingredientType.burger).isRequired
 }
 
 

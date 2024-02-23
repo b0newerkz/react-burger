@@ -3,6 +3,7 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import style from './app.module.css'
+import request from '../../utils/request';
 
 const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
@@ -17,23 +18,17 @@ const App = () => {
 
 	React.useEffect(() => {
 
-		fetch(API_URL)
-			.then(res => res.json())
-			.then(data => {
+		request(API_URL).then(data => {
 
-				if(data.success) {
-
-					setData({isLoaded: true, hasError: false, ingredients: data.data})
-				} else {
-
-					console.log('Ошибка получения данных')
-				}
-			})
-			.catch(e => {
-
-				console.log("Ошибка: "+ e.message)
-				setData({...data.ingredients, isLoading: false, hasError: true })
-			})
+			if(data.success) {
+				setData({isLoaded: true, hasError: false, ingredients: data.data})
+			} else {
+				console.log('Ошибка получения данных')
+			}
+		}).catch(e => {
+			console.log("Ошибка: "+ e)
+			setData({...data.ingredients, isLoading: false, hasError: true })
+		})
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

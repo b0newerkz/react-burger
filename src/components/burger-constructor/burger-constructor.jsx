@@ -6,15 +6,11 @@ import OrderDetails from '../order-details/order-details'
 import ConstructorItems from '../constructor-items/constructor-items'
 import PropTypes from 'prop-types'
 import Modal from '../modal/modal'
-
+import { useModal } from '../hooks/use-modal'
 
 const BurgerConstructor = (props) => {
 
-	const [showOrder, setShowOrder] = React.useState(false);
-
-	const openOrder = () => setShowOrder(true);
-
-	const closeOrder = () => setShowOrder(false);
+	const { isModalOpen, openModal, closeModal } = useModal();
 
 	const ingredients = {
 
@@ -50,9 +46,9 @@ const BurgerConstructor = (props) => {
 
 					<p className="text text_type_digits-medium">610</p>
 					<CurrencyIcon type="primary"/>
-					<Button htmlType="button" type="primary" onClick={openOrder} size="medium">Оформить заказ</Button>
+					<Button htmlType="button" type="primary" onClick={openModal} size="medium">Оформить заказ</Button>
 
-					{showOrder && <Modal onClose={closeOrder}><OrderDetails orderId='034536' /></Modal>}
+					{isModalOpen && <Modal onClose={closeModal}><OrderDetails orderId='034536' /></Modal>}
             	</div>
     		</div>
 		</div>

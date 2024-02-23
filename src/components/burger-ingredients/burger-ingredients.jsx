@@ -5,17 +5,13 @@ import PropTypes from 'prop-types';
 import ingredientType from '../../utils/types'
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-
+import { useModal,  } from '../hooks/use-modal';
 
 const Ingredient = props => {
 
 	const {_id, image, name, price} = props.data;
 
-	const [isModalOpen, setModalOpen] = React.useState(false);
-
-	const openModal = (e) => setModalOpen(true);
-
-	const closeModal = () => setModalOpen(false);
+	const { isModalOpen, openModal, closeModal } = useModal();
 
 	return (
 

@@ -5,14 +5,11 @@ import style from './constructor-item.module.css'
 import IngredientDetails from '../ingredient-details/ingredient-details'
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../modal/modal'
+import { useModal } from '../hooks/use-modal'
 
 const ConstructorItem = (props) => {
 	
-	const [isModalOpen, setModalOpen] = React.useState(false);
-
-	const openModal = () => setModalOpen(true);
-
-	const closeModal = () => setModalOpen(false);
+	const { isModalOpen, openModal, closeModal } = useModal();
 
 	const modal = (<Modal title='Детали ингредиента' onClose={closeModal}><IngredientDetails data={props.data} /></Modal>);
 

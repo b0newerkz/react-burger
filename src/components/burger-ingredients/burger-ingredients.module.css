@@ -1,0 +1,51 @@
+.main {
+
+	width: 600px;
+	padding-top: 40px;
+	margin-right: 40px;
+}
+
+.list {
+	height: 640px;
+	overflow-y: auto;
+}
+
+.listItems {
+
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	margin-bottom: 40px;
+}
+.tab {
+	display: flex;
+}
+.card {
+
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	width: 278px;
+	margin-bottom: 30px;
+}
+.cardTop {
+
+	display: flex;
+	position: relative;
+}
+.cardImage {
+
+	display: block;
+	padding: 4px;
+	margin: 0 10px 10px 10px;
+}
+.cardBottom {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 4px;
+}
+.name {
+
+	text-align: center;
+}

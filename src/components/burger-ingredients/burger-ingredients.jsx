@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import ingredientType from '../../utils/types'
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useModal,  } from '../hooks/use-modal';
+import { useModal } from '../hooks/use-modal';
 
 const Ingredient = props => {
 

@@ -1,64 +1,87 @@
-import React from 'react'
+import React, {useContext, useState} from 'react'
 import style from './burger-constructor.module.css'
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import ingredientType from '../../utils/types'
 import OrderDetails from '../order-details/order-details'
-import ConstructorItems from '../constructor-items/constructor-items'
-import PropTypes from 'prop-types'
 import Modal from '../modal/modal'
 import { useModal } from '../hooks/use-modal'
+import { ConstructorContext } from '../../utils/context'
+import ConstructorIngredients from '../constructor-ingredients/constructor-ingredients'
+import request from '../../utils/request'
+
+const ORDER_URL = 'https://norma.nomoreparties.space/api/orders'
 
 const BurgerConstructor = (props) => {
 
+	const [orderId, setOrderId] = useState('');
 	const { isModalOpen, openModal, closeModal } = useModal();
+	const {ingredients, dispatchIngredients} = useContext(ConstructorContext);
 
-	const ingredients = {
+	// Оформление заказа (булку передавать 2 раза)
+	const confirmOrder = () => {
 
-		top: [props.data[0]],
+		const bunId = ingredients.data.findIndex(e => e.type === 'bun');
+		if(bunId === -1) {
 
-		main: [
-			props.data[3],
-			props.data[4],
-			props.data[5],
-			props.data[7],
-			props.data[8],
-			props.data[8],
-			props.data[8],
-			props.data[10],
-		],
+			console.warn('Нет булки')
+			return;
+		}
 
-		bottom: [props.data[0]]
+		if(ingredients.data.findIndex(e => e.type !== 'bun') === -1) {
 
+			console.warn('Нет ингредиентов')
+			return;
+		}
+
+		const post = {
+
+			ingredients: ingredients.data.map(e => e._id)
+		}
+
+		// Добавляем ещё одну булку(нижнюю)
+		post.ingredients.push(ingredients.data[bunId]._id);
+		
+		const options = {
+
+			method: 'POST',
+			body: JSON.stringify(post),
+			headers: {
+
+				'Content-type': 'application/json; charset=UTF-8'
+			}
+		}
+
+		request(ORDER_URL, options).then(data => {
+
+			if(data.success) {
+
+				console.log("Order: "+ data.order.number)
+				setOrderId(data.order.number);
+				openModal();
+			} else {
+				console.log('Ошибка получения данных')
+			}
+		}).catch(e => {
+			console.log("Ошибка: "+ e)
+		})
 	}
 
 	return (
 		<div className={style.main}>
-			
 			<div className={style.list}>
 
-				<ConstructorItems place='top' items={ingredients.top} />
-
-				<ConstructorItems place='main' items={ingredients.main} />
-				
-				<ConstructorItems place='bottom' items={ingredients.bottom} />
+				<ConstructorIngredients />
 
 				<div className={style.button}>
-
-					<p className="text text_type_digits-medium">610</p>
+					<p className="text text_type_digits-medium">{ingredients.sum}</p>
 					<CurrencyIcon type="primary"/>
-					<Button htmlType="button" type="primary" onClick={openModal} size="medium">Оформить заказ</Button>
-
-					{isModalOpen && <Modal onClose={closeModal}><OrderDetails orderId='034536' /></Modal>}
-            	</div>
-    		</div>
+					<Button htmlType="button" type="primary" onClick={confirmOrder} size="medium">Оформить заказ</Button>
+					{isModalOpen && <Modal onClose={closeModal}><OrderDetails orderId={orderId} /></Modal>}
+					</div>
+			</div>
 		</div>
-		
 	)
 }
 
-BurgerConstructor.propTypes = {
-	
-	data: PropTypes.arrayOf(ingredientType.burger).isRequired
-}
+
 
 export default BurgerConstructor

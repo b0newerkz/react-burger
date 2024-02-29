@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import style from './burger-ingredients.module.css'
 import {Tab, Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
@@ -6,17 +6,25 @@ import ingredientType from '../../utils/types'
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useModal } from '../hooks/use-modal';
+import { ApiContext, ConstructorContext } from '../../utils/context';
 
 const Ingredient = props => {
 
 	const {_id, image, name, price} = props.data;
-
 	const { isModalOpen, openModal, closeModal } = useModal();
+	const data = useContext(ApiContext);
+	const {ingredients, dispatchIngredients} = useContext(ConstructorContext);
+
+	const addItem = (e) => {
+
+		const itemId = data.findIndex(e => e._id === _id);
+		dispatchIngredients({type: 'add', payload: data[itemId]})
+		e.preventDefault();
+	}
 
 	return (
-
 		<>
-			<div className={style.card} id={name} onClick={openModal}>
+			<div className={style.card} id={name} onClick={openModal} onContextMenu={addItem}>
 				<div className={style.cardTop}>
 					{_id === '60666c42cc7b410027a1a9b1' && <Counter count={1} size="default" extraClass="m-1" />}
 					<img src={image} alt={name} className={style.cardImage} />
@@ -44,15 +52,15 @@ Ingredient.propTypes = {
 	}).isRequired
 };
 
-const List = props => {
+const List = ({category, data}) => {
 
 	return (
 	  <>
 		<p className="text text_type_main-medium">
-			{props.category === 'bun' ? 'Булки' : props.category === 'sauce' ? 'Соусы' : 'Начинки'}
+			{category === 'bun' ? 'Булки' : category === 'sauce' ? 'Соусы' : 'Начинки'}
 		</p>
 		<div className={style.listItems}>
-			{props.data.map(ingredient => ingredient.type === props.category && <Ingredient data={ingredient} key={ingredient._id} />)}
+			{data.map(ingredient => ingredient.type === category && <Ingredient data={ingredient} key={ingredient._id} />)}
 		</div>
 	  </>
 	);
@@ -69,6 +77,11 @@ const BurgerIngredients = (props) => {
 	const state = {
 		tab: 'one'
 	}
+
+	const ingredients = useContext(ApiContext);
+	const buns = ingredients.filter((item) => item.type === "bun");
+	const mains = ingredients.filter((item) => item.type === "main");
+	const sauces = ingredients.filter((item) => item.type === "sauce");
 
 	return (
 		<div className={style.main}>
@@ -90,19 +103,13 @@ const BurgerIngredients = (props) => {
 			</div>
 
 			<div className={style.list}>
-				<List category='bun' data={props.data} />
-				<List category='sauce' data={props.data} />
-				<List category='main' data={props.data} />
+				<List category='bun' data={buns} />
+				<List category='sauce' data={sauces} />
+				<List category='main' data={mains} />
 			</div>
 		</div>
 		
 	)
 }
-
-BurgerIngredients.propTypes = {
-	
-	data: PropTypes.arrayOf(ingredientType.burger).isRequired
-}
-
 
 export default BurgerIngredients

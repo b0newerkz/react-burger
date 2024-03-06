@@ -3,7 +3,7 @@ import style from './constructor-ingredients.module.css'
 import { ConstructorContext } from '../../utils/context'
 import ConstructorItem from '../constructor-item/constructor-item'
 
-const ConstructorIngredients = (props) => {
+const ConstructorIngredients = () => {
 	
 	const data = useContext(ConstructorContext);
 	const buns = data.ingredients.data.filter((item) => item.type === "bun");

@@ -13,7 +13,7 @@ const Ingredient = props => {
 	const {_id, image, name, price} = props.data;
 	const { isModalOpen, openModal, closeModal } = useModal();
 	const data = useContext(ApiContext);
-	const {ingredients, dispatchIngredients} = useContext(ConstructorContext);
+	const {dispatchIngredients} = useContext(ConstructorContext);
 
 	const addItem = (e) => {
 

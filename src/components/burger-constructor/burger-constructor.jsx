@@ -10,13 +10,12 @@ import request from '../../utils/request'
 
 const ORDER_URL = 'https://norma.nomoreparties.space/api/orders'
 
-const BurgerConstructor = (props) => {
+const BurgerConstructor = () => {
 
 	const [orderId, setOrderId] = useState('');
-	const { isModalOpen, openModal, closeModal } = useModal();
-	const {ingredients, dispatchIngredients} = useContext(ConstructorContext);
+	const {isModalOpen, openModal, closeModal} = useModal();
+	const {ingredients} = useContext(ConstructorContext);
 
-	// Оформление заказа (булку передавать 2 раза)
 	const confirmOrder = () => {
 
 		const bunId = ingredients.data.findIndex(e => e.type === 'bun');
@@ -26,20 +25,22 @@ const BurgerConstructor = (props) => {
 			return;
 		}
 
-		if(ingredients.data.findIndex(e => e.type !== 'bun') === -1) {
+		// Список всех ингредиентов без булок 
+		const mains = ingredients.data.filter(e => e.type !== 'bun');
+		if(mains.length < 1) {
 
 			console.warn('Нет ингредиентов')
 			return;
 		}
 
+		// некрасиво, но надо чтобы булки были в начале и в конце массива :)
 		const post = {
 
-			ingredients: ingredients.data.map(e => e._id)
+			ingredients: [ingredients.data[bunId]._id, ...mains.map(e => e._id), ingredients.data[bunId]._id]
 		}
-
-		// Добавляем ещё одну булку(нижнюю)
-		post.ingredients.push(ingredients.data[bunId]._id);
 		
+		console.log(post)
+
 		const options = {
 
 			method: 'POST',

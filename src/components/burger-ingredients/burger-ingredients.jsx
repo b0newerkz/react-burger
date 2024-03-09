@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import style from './burger-ingredients.module.css'
 import {Tab, Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
@@ -6,19 +6,27 @@ import ingredientType from '../../utils/types'
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useModal } from '../hooks/use-modal';
-import { ApiContext, ConstructorContext } from '../../utils/context';
+import { useSelector, useDispatch } from 'react-redux';
+import { CONSTRUCTOR_ADD_BUN, CONSTRUCTOR_ADD_INGREDIENT } from '../../services/actions';
 
 const Ingredient = props => {
 
 	const {_id, image, name, price} = props.data;
 	const { isModalOpen, openModal, closeModal } = useModal();
-	const data = useContext(ApiContext);
-	const {dispatchIngredients} = useContext(ConstructorContext);
+	const dispatch = useDispatch();
+	const {ingredients} = useSelector(store => store.data);
 
 	const addItem = (e) => {
 
-		const itemId = data.findIndex(e => e._id === _id);
-		dispatchIngredients({type: 'add', payload: data[itemId]})
+		const itemId = ingredients.findIndex(e => e._id === _id);
+		if(ingredients[itemId].type === 'bun') {
+
+			dispatch({type: CONSTRUCTOR_ADD_BUN, item: ingredients[itemId]})
+		}
+		else {
+
+			dispatch({type: CONSTRUCTOR_ADD_INGREDIENT, item: ingredients[itemId]})
+		}
 		e.preventDefault();
 	}
 
@@ -78,10 +86,10 @@ const BurgerIngredients = (props) => {
 		tab: 'one'
 	}
 
-	const ingredients = useContext(ApiContext);
-	const buns = ingredients.filter((item) => item.type === "bun");
-	const mains = ingredients.filter((item) => item.type === "main");
-	const sauces = ingredients.filter((item) => item.type === "sauce");
+	const data = useSelector(store => store.data.ingredients);
+	const buns = data.filter((item) => item.type === "bun");
+	const mains = data.filter((item) => item.type === "main");
+	const sauces = data.filter((item) => item.type === "sauce");
 
 	return (
 		<div className={style.main}>

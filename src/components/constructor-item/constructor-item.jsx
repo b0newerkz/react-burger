@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import ingredientType from '../../utils/types'
 import style from './constructor-item.module.css'
@@ -6,20 +6,21 @@ import IngredientDetails from '../ingredient-details/ingredient-details'
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../modal/modal'
 import { useModal } from '../hooks/use-modal'
-import { ConstructorContext } from '../../utils/context'
+import { useDispatch } from 'react-redux'
+import { CONSTRUCTOR_REMOVE_INGREDIENT } from '../../services/actions'
 
 
 const ConstructorItem = (props) => {
 	
 	const { isModalOpen, openModal, closeModal } = useModal();
-	const {ingredients, dispatchIngredients} = useContext(ConstructorContext);
+	const dispatch = useDispatch();
 
 	const modal = (<Modal title='Детали ингредиента' onClose={closeModal}><IngredientDetails data={props.data} /></Modal>);
 
 	// Удаление из товаров
 	const handleClose = (e) => {
 
-		dispatchIngredients({type: 'remove', payload: props.uuid})
+		dispatch({type: CONSTRUCTOR_REMOVE_INGREDIENT, uuid: props.uuid})
 		e.stopPropagation();
 	}
 

@@ -1,33 +1,29 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import style from './constructor-ingredients.module.css'
-import { ConstructorContext } from '../../utils/context'
 import ConstructorItem from '../constructor-item/constructor-item'
+import { useSelector } from 'react-redux' 
 
 const ConstructorIngredients = () => {
 	
-	const data = useContext(ConstructorContext);
-	const buns = data.ingredients.data.filter((item) => item.type === "bun");
-	const mains = data.ingredients.data.filter((item) => item.type !== "bun");
+	const {bun, main} = useSelector(store => store.ingredients);
 	
 	return (
 		<>
 			{/* Булка(верх) */}
 			<div className={style.items}>
-				{buns.map((e, i) => (<ConstructorItem key={e.uuid} uuid={e.uuid} data={e} place='top' />))}
+				{bun && <ConstructorItem key={bun.uuid} uuid={bun.uuid} data={bun} place='top' />}
 			</div>
 
-			<div className={style.items}>
-				{mains.map((e, i) => (<ConstructorItem key={e.uuid} uuid={e.uuid} data={e} place='main' />))}
-			</div>
+			{<div className={style.items}>
+				{main.map((e, i) => (<ConstructorItem key={e.uuid} uuid={e.uuid} data={e} place='main' />))}
+			</div>}
 
 			{/* Булка(низ) */}
 			<div className={style.items}>
-				{buns.map((e, i) => (<ConstructorItem key={e.uuid} uuid={e.uuid} data={e} place='bottom' />))}
+				{bun && <ConstructorItem key={bun.uuid} uuid={bun.uuid} data={bun} place='bottom' />}
 			</div>
 		</>
 	)
 }
-
-
 
 export default ConstructorIngredients

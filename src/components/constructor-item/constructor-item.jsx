@@ -7,13 +7,15 @@ import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burg
 import Modal from '../modal/modal'
 import { useModal } from '../hooks/use-modal'
 import { useDispatch } from 'react-redux'
-import { CONSTRUCTOR_REMOVE_INGREDIENT } from '../../services/actions'
+import { CONSTRUCTOR_REMOVE_INGREDIENT, CONSTRUCTOR_SORT_INGREDIENT } from '../../services/actions'
+import { useDrop, useDrag } from 'react-dnd'
 
 
 const ConstructorItem = (props) => {
 	
 	const { isModalOpen, openModal, closeModal } = useModal();
 	const dispatch = useDispatch();
+	const {position = 0} = props
 
 	const modal = (<Modal title='Детали ингредиента' onClose={closeModal}><IngredientDetails data={props.data} /></Modal>);
 
@@ -24,9 +26,27 @@ const ConstructorItem = (props) => {
 		e.stopPropagation();
 	}
 
+	const [, dragRef] = useDrag({
+		type: 'sort',
+		item: {id: props.data._id, position}
+	})
+
+	const [, dropRef] = useDrop({
+
+		accept: 'sort',
+		drop(item) {
+
+			//console.log(item.position +" to "+ position)
+			if(position !== item.position) {
+
+				dispatch({type: CONSTRUCTOR_SORT_INGREDIENT, from: position, to: item.position})
+			}
+		}
+	})
+
 	return (
-		<>
-			<div className={style.item} onClick={openModal}>
+		<div {...(props.place === 'main' && {ref: dropRef})}>
+			<div className={style.item} onClick={openModal} {...(props.place === 'main' && {ref: dragRef})}>
 				<div className={style.dragIcon}>
 					{props.place === 'main' && <DragIcon type='primary' />}
 				</div>
@@ -43,7 +63,7 @@ const ConstructorItem = (props) => {
 				</div>
 			</div>
 			{isModalOpen && modal}
-		</>
+		</div>
 	)
 }
 

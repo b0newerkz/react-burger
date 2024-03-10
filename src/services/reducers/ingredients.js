@@ -1,13 +1,8 @@
 import { INGREDIENTS_FAILED, INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS } from "../actions"
-
-const initialState = {
-	ingredients: [],
-	isError: false,
-	isLoaded: false,
-}
+import { initialState } from "../initialState"
 
 
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (state = initialState.data, action) => {
 
 	switch(action.type) {
 

@@ -12,8 +12,7 @@ export const initialState = {
 	ingredients: {
 
 		bun: null,
-		main: [],
-		price: 0
+		main: []
 	},
 
 	// объект текущего просматриваемого ингредиента
@@ -24,6 +23,6 @@ export const initialState = {
 
 		id: 0,
 		isError: false,
-		isLoading: false
+		isLoaded: false
 	}
 }

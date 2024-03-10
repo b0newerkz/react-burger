@@ -15,7 +15,7 @@ const ConstructorIngredients = () => {
 			</div>
 
 			{<div className={style.items}>
-				{main.map((e, i) => (<ConstructorItem key={e.uuid} uuid={e.uuid} data={e} place='main' />))}
+				{main.map((e, i) => (<ConstructorItem key={e.uuid} uuid={e.uuid} data={e} place='main' position={i} />))}
 			</div>}
 
 			{/* Булка(низ) */}

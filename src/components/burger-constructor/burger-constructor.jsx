@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import style from './burger-constructor.module.css'
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import OrderDetails from '../order-details/order-details'
@@ -7,6 +7,8 @@ import { useModal } from '../hooks/use-modal'
 import ConstructorIngredients from '../constructor-ingredients/constructor-ingredients'
 import { useSelector, useDispatch } from 'react-redux'
 import { getOrder } from '../../services/actions/order'
+import { useDrop } from 'react-dnd'
+import { CONSTRUCTOR_ADD_BUN, CONSTRUCTOR_ADD_INGREDIENT } from '../../services/actions'
 
 const BurgerConstructor = () => {
 
@@ -14,6 +16,7 @@ const BurgerConstructor = () => {
 	const ingredients = useSelector(store => store.ingredients)
 	const dispatch = useDispatch();
 	const orderId = useSelector(store => store.order.id)
+	const allIngredients = useSelector(store => store.data.ingredients);
 
 	const confirmOrder = () => {
 
@@ -47,14 +50,39 @@ const BurgerConstructor = () => {
 		dispatch(getOrder(options, openModal))
 	}
 
+	const [, drop] = useDrop({
+
+		accept: 'ingredient',
+		drop(item) {
+
+			const itemId = allIngredients.findIndex(e => e._id === item.id);
+
+			if(allIngredients[itemId].type === 'bun') {
+
+				dispatch({type: CONSTRUCTOR_ADD_BUN, item: allIngredients[itemId]})
+			}
+			else {
+
+				dispatch({type: CONSTRUCTOR_ADD_INGREDIENT, item: allIngredients[itemId]})
+			}
+		}
+	})
+
+	const sum = useMemo(() => {
+
+		return  0 
+			+ (ingredients.bun ? ingredients.bun.price * 2 : 0) 
+			+ (ingredients.main.length > 0 ? ingredients.main.reduce((acc, e) => e.price + acc, 0) : 0);
+	}, [ingredients])
+
 	return (
-		<div className={style.main}>
+		<div ref={drop} className={style.main}>
 			<div className={style.list}>
 
 				<ConstructorIngredients />
 
 				<div className={style.button}>
-					<p className="text text_type_digits-medium">{ingredients.sum}</p>
+					<p className="text text_type_digits-medium">{sum}</p>
 					<CurrencyIcon type="primary"/>
 					<Button htmlType="button" type="primary" onClick={confirmOrder} size="medium">Оформить заказ</Button>
 					{isModalOpen && orderId > 0 && <Modal onClose={closeModal}><OrderDetails orderId={orderId} /></Modal>}

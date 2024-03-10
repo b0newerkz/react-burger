@@ -1,13 +1,7 @@
 import { ORDER_ERROR, ORDER_NUMBER, ORDER_REQUEST, ORDER_SUCCESS } from "../actions"
+import { initialState } from "../initialState"
 
-const initialState = {
-	id: 0,
-	isError: false,
-	isLoaded: false
-}
-
-
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState.order, action) => {
 
 	switch(action.type) {
 

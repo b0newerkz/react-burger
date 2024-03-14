@@ -8,8 +8,7 @@ import ConstructorIngredients from '../constructor-ingredients/constructor-ingre
 import { useSelector, useDispatch } from 'react-redux'
 import { getOrder } from '../../services/actions/order'
 import { useDrop } from 'react-dnd'
-import { CONSTRUCTOR_ADD_BUN, CONSTRUCTOR_ADD_INGREDIENT } from '../../services/actions'
-
+import { addIngredient } from '../../services/actions/constructor'
 const BurgerConstructor = () => {
 
 	const {isModalOpen, openModal, closeModal} = useModal();
@@ -22,13 +21,11 @@ const BurgerConstructor = () => {
 
 		// Проверяем булку
 		if(!ingredients.bun) {
-
 			return;
 		}
 
 		// Проверяем ингредиенты
 		if(ingredients.main.length < 1) {
-
 			return;
 		}
 
@@ -45,15 +42,7 @@ const BurgerConstructor = () => {
 		drop(item) {
 
 			const itemId = allIngredients.findIndex(e => e._id === item.id);
-
-			if(allIngredients[itemId].type === 'bun') {
-
-				dispatch({type: CONSTRUCTOR_ADD_BUN, item: allIngredients[itemId]})
-			}
-			else {
-
-				dispatch({type: CONSTRUCTOR_ADD_INGREDIENT, item: allIngredients[itemId]})
-			}
+			dispatch(addIngredient(allIngredients[itemId]));
 		}
 	})
 

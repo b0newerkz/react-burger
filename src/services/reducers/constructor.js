@@ -1,5 +1,4 @@
 import { CONSTRUCTOR_ADD_INGREDIENT, CONSTRUCTOR_REMOVE_INGREDIENT, CONSTRUCTOR_ADD_BUN, CONSTRUCTOR_SORT_INGREDIENT } from "../actions";
-import { v4 as uuidv4 } from 'uuid';
 import { initialState } from "../initialState";
 
 
@@ -28,12 +27,12 @@ export const constructorReducer = (state = initialState.constructorData, action)
 
 		case CONSTRUCTOR_ADD_INGREDIENT: {
 
-			return {...state, main: [...state.main, {...action.item, uuid: uuidv4()}]};
+			return {...state, main: [...state.main, action.item]};
 		}
 		
 		case CONSTRUCTOR_ADD_BUN: {
 
-			return {...state, bun: {...action.item, uuid: uuidv4()}};
+			return {...state, bun: action.item};
 		}
 
 		default: {

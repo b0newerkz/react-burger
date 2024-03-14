@@ -1,64 +1,97 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import style from './burger-constructor.module.css'
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import ingredientType from '../../utils/types'
 import OrderDetails from '../order-details/order-details'
-import ConstructorItems from '../constructor-items/constructor-items'
-import PropTypes from 'prop-types'
 import Modal from '../modal/modal'
 import { useModal } from '../hooks/use-modal'
+import ConstructorIngredients from '../constructor-ingredients/constructor-ingredients'
+import { useSelector, useDispatch } from 'react-redux'
+import { getOrder } from '../../services/actions/order'
+import { useDrop } from 'react-dnd'
+import { CONSTRUCTOR_ADD_BUN, CONSTRUCTOR_ADD_INGREDIENT } from '../../services/actions'
 
-const BurgerConstructor = (props) => {
+const BurgerConstructor = () => {
 
-	const { isModalOpen, openModal, closeModal } = useModal();
+	const {isModalOpen, openModal, closeModal} = useModal();
+	const ingredients = useSelector(store => store.ingredients)
+	const dispatch = useDispatch();
+	const orderId = useSelector(store => store.order.id)
+	const allIngredients = useSelector(store => store.data.ingredients);
 
-	const ingredients = {
+	const confirmOrder = () => {
 
-		top: [props.data[0]],
+		// Проверяем булку
+		if(!ingredients.bun) {
 
-		main: [
-			props.data[3],
-			props.data[4],
-			props.data[5],
-			props.data[7],
-			props.data[8],
-			props.data[8],
-			props.data[8],
-			props.data[10],
-		],
+			console.warn('Нет булки')
+			return;
+		}
 
-		bottom: [props.data[0]]
+		// Проверяем ингредиенты
+		if(ingredients.main.length < 1) {
 
+			console.warn('Нет ингредиентов')
+			return;
+		}
+
+		// Составляем POST
+		const options = {
+
+			method: 'POST',
+			body: JSON.stringify({
+				ingredients: [ingredients.bun._id, ...ingredients.main.map(e => e._id), ingredients.bun._id]
+			}),
+			headers: {
+				'Content-type': 'application/json; charset=UTF-8'
+			}
+		}
+
+		// Отправляем запрос
+		dispatch(getOrder(options, openModal))
 	}
 
+	const [, drop] = useDrop({
+
+		accept: 'ingredient',
+		drop(item) {
+
+			const itemId = allIngredients.findIndex(e => e._id === item.id);
+
+			if(allIngredients[itemId].type === 'bun') {
+
+				dispatch({type: CONSTRUCTOR_ADD_BUN, item: allIngredients[itemId]})
+			}
+			else {
+
+				dispatch({type: CONSTRUCTOR_ADD_INGREDIENT, item: allIngredients[itemId]})
+			}
+		}
+	})
+
+	const sum = useMemo(() => {
+
+		return  0 
+			+ (ingredients.bun ? ingredients.bun.price * 2 : 0) 
+			+ (ingredients.main.length > 0 ? ingredients.main.reduce((acc, e) => e.price + acc, 0) : 0);
+	}, [ingredients])
+
 	return (
-		<div className={style.main}>
-			
+		<div ref={drop} className={style.main}>
 			<div className={style.list}>
 
-				<ConstructorItems place='top' items={ingredients.top} />
-
-				<ConstructorItems place='main' items={ingredients.main} />
-				
-				<ConstructorItems place='bottom' items={ingredients.bottom} />
+				<ConstructorIngredients />
 
 				<div className={style.button}>
-
-					<p className="text text_type_digits-medium">610</p>
+					<p className="text text_type_digits-medium">{sum}</p>
 					<CurrencyIcon type="primary"/>
-					<Button htmlType="button" type="primary" onClick={openModal} size="medium">Оформить заказ</Button>
-
-					{isModalOpen && <Modal onClose={closeModal}><OrderDetails orderId='034536' /></Modal>}
-            	</div>
-    		</div>
+					<Button htmlType="button" type="primary" onClick={confirmOrder} size="medium">Оформить заказ</Button>
+					{isModalOpen && orderId > 0 && <Modal onClose={closeModal}><OrderDetails orderId={orderId} /></Modal>}
+					</div>
+			</div>
 		</div>
-		
 	)
 }
 
-BurgerConstructor.propTypes = {
-	
-	data: PropTypes.arrayOf(ingredientType.burger).isRequired
-}
+
 
 export default BurgerConstructor

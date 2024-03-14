@@ -20,8 +20,10 @@ header {
 	max-width: 100%;
 	  margin-right: 2px;
 	  justify-content: center;
+	  color:aliceblue;
+	  text-decoration: none;
   }
-  
+
   .menuLogo {
   
 	composes: menuItem;

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { initialState } from "../initialState";
 
 
-export const constructorReducer = (state = initialState.ingredients, action) => {
+export const constructorReducer = (state = initialState.constructorData, action) => {
 
 	switch(action.type) {
 
@@ -23,7 +23,6 @@ export const constructorReducer = (state = initialState.ingredients, action) => 
 			const itemId = main.findIndex((e) => e.uuid === action.uuid);
 			main.splice(itemId, 1);
 
-			// data.findIndex((e) => e.uuid === action.payload);
 			return {...state, main: main}
 		}
 

@@ -7,7 +7,7 @@ export const orderReducer = (state = initialState.order, action) => {
 
 		case ORDER_ERROR: {
 
-			return { ...state, isError: true, isLoaded: false }
+			return { ...state, isError: true, isLoaded: false, id: 0 }
 		}
 
 		case ORDER_NUMBER: {

@@ -2,7 +2,7 @@ import { INGREDIENTS_FAILED, INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS } from "..
 import { initialState } from "../initialState"
 
 
-export const ingredientsReducer = (state = initialState.data, action) => {
+export const ingredientsReducer = (state = initialState.ingredients, action) => {
 
 	switch(action.type) {
 
@@ -18,7 +18,7 @@ export const ingredientsReducer = (state = initialState.data, action) => {
 
 		case INGREDIENTS_SUCCESS: {
 
-			return {...state, isLoaded: true, isError: false, ingredients: action.data}
+			return {...state, isLoaded: true, isError: false, data: action.data}
 		}
 
 		default: {

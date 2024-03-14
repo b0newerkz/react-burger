@@ -11,7 +11,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 const App = () => {
 
 	const dispatch = useDispatch();
-	const {isLoaded, isError, ingredients} = useSelector(store => store.data);
+	const {isLoaded, isError, data} = useSelector(store => store.ingredients);
 
 	React.useEffect(() => {
 
@@ -24,8 +24,8 @@ const App = () => {
 			<AppHeader />
 			<DndProvider backend={HTML5Backend}>
 				<main className={style.container}>
-					{isLoaded && !isError && ingredients && <BurgerIngredients />}
-					{isLoaded && !isError && ingredients && <BurgerConstructor />}
+					{isLoaded && !isError && data && <BurgerIngredients />}
+					{isLoaded && !isError && data && <BurgerConstructor />}
 				</main>
 			</DndProvider>
 		</>

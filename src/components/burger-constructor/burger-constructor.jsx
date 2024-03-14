@@ -13,41 +13,30 @@ import { CONSTRUCTOR_ADD_BUN, CONSTRUCTOR_ADD_INGREDIENT } from '../../services/
 const BurgerConstructor = () => {
 
 	const {isModalOpen, openModal, closeModal} = useModal();
-	const ingredients = useSelector(store => store.ingredients)
+	const ingredients = useSelector(store => store.constructorData)
 	const dispatch = useDispatch();
 	const orderId = useSelector(store => store.order.id)
-	const allIngredients = useSelector(store => store.data.ingredients);
+	const allIngredients = useSelector(store => store.ingredients.data);
 
 	const confirmOrder = () => {
 
 		// Проверяем булку
 		if(!ingredients.bun) {
 
-			console.warn('Нет булки')
 			return;
 		}
 
 		// Проверяем ингредиенты
 		if(ingredients.main.length < 1) {
 
-			console.warn('Нет ингредиентов')
 			return;
 		}
 
 		// Составляем POST
-		const options = {
-
-			method: 'POST',
-			body: JSON.stringify({
-				ingredients: [ingredients.bun._id, ...ingredients.main.map(e => e._id), ingredients.bun._id]
-			}),
-			headers: {
-				'Content-type': 'application/json; charset=UTF-8'
-			}
-		}
+		const data = [ingredients.bun._id, ...ingredients.main.map(e => e._id), ingredients.bun._id];
 
 		// Отправляем запрос
-		dispatch(getOrder(options, openModal))
+		dispatch(getOrder(data, openModal))
 	}
 
 	const [, drop] = useDrop({

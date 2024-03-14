@@ -1,15 +1,15 @@
 export const initialState = {
 
 	// список всех полученных ингредиентов
-	data: {
+	ingredients: {
 
-		ingredients: [],
+		data: [],
 		isError: false,
 		isLoading: false,
 	},
 
 	// список всех ингредиентов в текущем конструкторе бургера
-	ingredients: {
+	constructorData: {
 
 		bun: null,
 		main: []

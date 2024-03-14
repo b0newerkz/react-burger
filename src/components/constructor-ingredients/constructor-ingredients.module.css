@@ -5,3 +5,18 @@
 	overflow: auto;
 	max-height: 350px;
 }
+
+.item {
+	display: flex;
+	align-items: center;
+}
+
+.dragIcon {
+	min-width: 32px;
+}
+.info {
+	width: 100%;
+}
+.template {
+	justify-content: center;
+}

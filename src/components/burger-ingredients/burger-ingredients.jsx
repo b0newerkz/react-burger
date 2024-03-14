@@ -13,7 +13,7 @@ const Ingredient = props => {
 
 	const {_id, image, name, price, type} = props.data;
 	const { isModalOpen, openModal, closeModal } = useModal();
-	const {bun, main} = useSelector(store => store.ingredients);
+	const {bun, main} = useSelector(store => store.constructorData);
 
 	const [num, setNum] = useState(0)
 	
@@ -97,7 +97,7 @@ const BurgerIngredients = (props) => {
 
 	const [tab, setTab] = useState('one');
 
-	const data = useSelector(store => store.data.ingredients);
+	const data = useSelector(store => store.ingredients.data);
 	const buns = data.filter((item) => item.type === "bun");
 	const mains = data.filter((item) => item.type === "main");
 	const sauces = data.filter((item) => item.type === "sauce");
